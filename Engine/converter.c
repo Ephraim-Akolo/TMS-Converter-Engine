@@ -53,9 +53,7 @@ int encrypt(FILE* file)
 
 int inprint(FILE* file, const char* pathname)
 {
-   fseek(file, 0, SEEK_END);
-   char _print[] = PRINT;
-   strrchr()
+  
 }
 
 
