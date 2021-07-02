@@ -17,4 +17,4 @@ int encrypted(FILE*);
 
 int encrypt(FILE*);
 
-int inprint(FILE*, const char* );
+int inprint(FILE*, char* );
