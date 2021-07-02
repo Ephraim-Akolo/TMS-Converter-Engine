@@ -2,6 +2,7 @@
 
 #define ENCRYPTION_KEY 0x01
 #define PRINT "TMSCOMPANY"
+#define EXTENSION ".tms"
 
 int convert(char pathname[])
 {
@@ -14,13 +15,12 @@ int convert(char pathname[])
         exit(-1);
     }
 
-   // if(encrypted(file))
-     //   printf("Encrypted!\n\n");
+    if(encrypted(file))
+        printf("Encrypted!\n\n");
 
    // encrypt(file);
 
-    inprint(file, pathname);
-    fclose(file);
+    //inprint(file, pathname);
 }
 
 int encrypt(FILE* file)
@@ -51,11 +51,42 @@ int encrypt(FILE* file)
 }
 
 
-int inprint(FILE* file, const char* pathname)
+int inprint(FILE* file, char* pathname)
 {
-   fseek(file, 0, SEEK_END);
-   char _print[] = PRINT;
-   strrchr()
+    
+    char* printdata = strdup(PRINT);
+    // duplicate pathname
+    char* _path = strdup(pathname);
+    // Get file extension
+    char* ext = strrchr(pathname, '.');
+    if(!ext)
+    {
+        fprintf(stderr,"This should not happen!: ", strerror(errno)); ///******** check later
+    }
+    // Concatenate the extension in the print data
+    strcat(printdata, ext);
+    //concatenate the print data length int the printdata
+    char len[2];
+    len[0] = strlen(printdata) + 1;    // +1 for the len itself to be appended
+    len[1] = '\0';                     // len in string format because of strcat.
+    strcat(printdata, len);
+    // go to the end of the file and inprint the print data
+    fseek(file, 0, SEEK_END);
+    fwrite(printdata, sizeof(char), len[0], file);
+    // exclude original extension from allocated memory and append EXTENSION
+    strrev(_path); 
+    _path = strchr(_path, '.');
+    char* basename = _path + 1; // passing the path without the '.'
+    strrev(basename);
+    strcat(basename, EXTENSION);
+    // close file stream
+    fclose(file);
+    //rename with extension
+    rename(pathname, basename);
+    //realease memory back to the OS.
+    free(_path);
+    free(printdata);
+    
 }
 
 
