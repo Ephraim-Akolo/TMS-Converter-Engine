@@ -1,11 +1,13 @@
 #include"converter.h"
 
-#define ENCRYPTION_KEY 0x01
+#define ENCRYPTION_KEY 0x85
 #define PRINT "TMSCOMPANY"
 #define EXTENSION ".tms"
 
 int convert(char pathname[])
 {
+    /*returns 1 if encrypted and 2 if already encrypted.*/
+
     // open file in read write binary mode.
     FILE* file;
     file = fopen(pathname, "rb+");
@@ -14,13 +16,14 @@ int convert(char pathname[])
        fprintf(stderr, "File Error: %s", strerror(errno));
         exit(-1);
     }
-
+    // Return if already encrypted.
     if(encrypted(file))
-        printf("Encrypted!\n\n");
-
-   // encrypt(file);
-
-    //inprint(file, pathname);
+        return 2;
+    // otherwise encrypt the file.
+    encrypt(file);
+    // then create an inprint on the file.
+    inprint(file, pathname);
+    return 1;
 }
 
 int encrypt(FILE* file)
@@ -81,7 +84,7 @@ int inprint(FILE* file, char* pathname)
     strcat(basename, EXTENSION);
     // close file stream
     fclose(file);
-    //rename with extension
+    //rename to .tms extension
     rename(pathname, basename);
     //realease memory back to the OS.
     free(_path);
@@ -92,5 +95,31 @@ int inprint(FILE* file, char* pathname)
 
 int encrypted(FILE* file)
 {
-    
+    // Go the end of the file and get the last byte
+    fseek(file, -1, SEEK_END);
+    unsigned char printsize;
+    fread(&printsize, sizeof(printsize), 1, file);
+    // Use the last byte to get PRINT also using the length of PRINT
+    char* print = (char*)calloc(sizeof(char), strlen(PRINT)+1);
+    if(print == NULL)
+    {
+        fprintf(stderr,"Memory error: %s", strerror(errno));
+        exit(-3);
+    }
+    fseek(file, -1*printsize,SEEK_END);
+    fread(print, sizeof(char), strlen(PRINT), file);
+    // Compare both PRINTS 
+    char* initprint = strdup(PRINT);
+    if(strcmp(print, initprint) == 0)
+    {
+        free(print);
+        free(initprint);
+        return 1;
+    }
+    else
+    {
+        free(print);
+        free(initprint);
+        return 0;
+    }
 }

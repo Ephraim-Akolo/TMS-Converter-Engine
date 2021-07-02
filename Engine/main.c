@@ -2,6 +2,6 @@
 
 int main()
 {
-    int state = convert("C:/Users/Ephraim/Desktop/out.bin");
+    int state = convert("C:/Users/Ephraim/Desktop/Micheal_forgoten.tms");
     return 0;
 }
