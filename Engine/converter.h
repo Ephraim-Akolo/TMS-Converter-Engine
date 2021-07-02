@@ -1,6 +1,6 @@
-/* This program takes the absolute path of the video(s)
-with the number of path provided, then encripts the 
-video and overwrites the original video */
+/* This program takes the absolute path of the file 
+e.g video, then encripts the file and overwrites
+the original video */
 
 #include<stdio.h>
 #include<errno.h>
@@ -11,10 +11,9 @@ video and overwrites the original video */
 
 // Takes the source path of file to encript.
 int convert(char* );
-
-//Takes the source path and checks for TMS extension.
+// Takes a file stream and verifies if encrypted.
 int encrypted(FILE*);
-
+// Takes a file stream and encrypts it.
 int encrypt(FILE*);
-
+// Takes a file stream and file path to inprint on the file and change its extension.
 int inprint(FILE*, char* );
