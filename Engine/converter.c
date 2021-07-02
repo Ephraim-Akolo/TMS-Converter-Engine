@@ -15,12 +15,12 @@ int convert(char pathname[])
         exit(-1);
     }
 
-   // if(encrypted(file))
-     //   printf("Encrypted!\n\n");
+    if(encrypted(file))
+        printf("Encrypted!\n\n");
 
    // encrypt(file);
 
-    inprint(file, pathname);
+    //inprint(file, pathname);
 }
 
 int encrypt(FILE* file)
@@ -55,8 +55,6 @@ int inprint(FILE* file, char* pathname)
 {
     
     char* printdata = strdup(PRINT);
-    int pathsize = strlen(pathname) + 1;
-    
     // duplicate pathname
     char* _path = strdup(pathname);
     // Get file extension
