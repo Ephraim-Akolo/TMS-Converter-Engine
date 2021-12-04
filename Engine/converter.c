@@ -1,6 +1,9 @@
+/* CORRECT TO THE RIGHT ENCRYPTION_KEY BEFORE COMPILING */
+#define __VERSION__ 1.0.0
+
 #include"converter.h"
 
-#define ENCRYPTION_KEY 0x85
+#define ENCRYPTION_KEY 0x**
 #define PRINT "TMSCOMPANY"
 #define EXTENSION ".tms"
 
